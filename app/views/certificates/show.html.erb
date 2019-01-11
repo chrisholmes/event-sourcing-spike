@@ -1,0 +1,17 @@
+<% @group.certificates.each do |certificate| %>
+<p>Usage: <%= certificate.use %> Value: <%= certificate.value %></p>
+<% end %>
+
+<%= form_for Certificate.new, url: create_certificate_path(@group.id)  do |f| %>
+  <p> Usage:
+    <%= f.radio_button :use, 'signing' %>
+    <%= f.label :use_signing, 'Signing' %>
+    <%= f.radio_button :use, 'encryption' %>
+    <%= f.label :use_encryption, 'Encryption' %>
+  </p>
+  <p>
+  <%= f.label :value, 'Value' %>
+  <%= f.text_field :value %>
+  </p>
+  <%= f.submit %>
+<% end %>

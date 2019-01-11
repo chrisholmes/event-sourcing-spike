@@ -1,0 +1,7 @@
+<% @certificate_groups.each do |group| %>
+<p><%= group.id %> <%= link_to  "View", show_certificate_group_path(group.id) %></p>
+<% end %>
+
+<%= form_for CertificateGroup.new, url: create_certificate_groups_path do |f| %>
+  <%= f.submit "Create" %>
+<% end %>
