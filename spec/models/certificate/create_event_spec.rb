@@ -9,6 +9,9 @@ RSpec.describe Certificate::CreateEvent, type: :model do
     event = Certificate::CreateEvent.create!(use: "signing", value: "FOOBARBAZ", owner: good_owner)
     expect(event).to be_persisted
     expect(event.certificate).to be_persisted
+    expect(event.owner_id).to eql good_owner.id
+    expect(event.owner_type).to eql "CertificateGroup"
+    expect(Certificate::CreateEvent.find(event.id).owner).to eql good_owner
   end
 
   it 'cannot be attached to a certificate that already exists' do
@@ -34,7 +37,7 @@ RSpec.describe Certificate::CreateEvent, type: :model do
     end
     
     it 'must have a persisted owner' do
-      event = Certificate::CreateEvent.create(use: "signing", value: "FOOBARBAZ", owner: RelyingParty.new)
+      event = Certificate::CreateEvent.create(use: "signing", value: "FOOBARBAZ", owner: CertificateGroup.new)
       expect(event).to_not be_valid
       expect(event.errors[:owner]).to eql ["must exist"]
     end

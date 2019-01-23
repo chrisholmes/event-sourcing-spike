@@ -1,4 +1,7 @@
 class Certificate::CreateEvent < CertificateEvent
+  data_attributes :use, :value
+  aggregate_belongs_to :owner
+
   validate :certificate_not_persisted, on: :create
   validate :owner_exists
   validates_presence_of :value, :use, :owner
@@ -28,37 +31,4 @@ class Certificate::CreateEvent < CertificateEvent
     certificate
   end
 
-  def use
-    self.data ||= {}
-    self.data['certificate_type']
-  end
-
-  def use=(type)
-    self.data ||= {}
-    self.data['certificate_type'] = type
-  end
-
-  def value
-    self.data ||= {}
-    self.data['value']
-  end
-
-  def value=(type)
-    self.data ||= {}
-    self.data['value'] = type
-  end
-
-  def owner
-    @owner
-  end
-
-  def owner=(owner)
-    @owner = owner
-    self.owner_id = owner.id
-  end
-
-  def owner_id=(type)
-    self.data ||= {}
-    self.data['owner_id'] = type
-  end
 end
