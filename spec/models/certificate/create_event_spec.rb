@@ -1,9 +1,12 @@
 require 'rails_helper'
+require 'models/event_spec.rb'
 
 RSpec.describe Certificate::CreateEvent, type: :model do
   let(:good_owner) {
     CertificateGroup.create
   }
+  include_examples "is a creation event", Certificate::CreateEvent, {use: "signing", value: "FOOBARBAZ", owner: CertificateGroup.create}
+  include_examples "has data attributes", Certificate::CreateEvent, [:use, :value]
 
   it "represents the creation of a certificate" do
     event = Certificate::CreateEvent.create!(use: "signing", value: "FOOBARBAZ", owner: good_owner)

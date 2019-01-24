@@ -1,4 +1,5 @@
-class Certificate::CreateEvent < CertificateEvent
+class Certificate::CreateEvent < Event
+  aggregated_with :certificate
   data_attributes :use, :value
   aggregate_belongs_to :owner
 

@@ -10,25 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_10_112556) do
-
-  create_table "certificate_events", force: :cascade do |t|
-    t.string "type", null: false
-    t.json "data"
-    t.integer "certificate_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["certificate_id"], name: "index_certificate_events_on_certificate_id"
-  end
-
-  create_table "certificate_group_events", force: :cascade do |t|
-    t.string "type", null: false
-    t.json "data"
-    t.integer "certificate_group_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["certificate_group_id"], name: "index_certificate_group_events_on_certificate_group_id"
-  end
+ActiveRecord::Schema.define(version: 2019_01_23_103548) do
 
   create_table "certificate_groups", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -42,6 +24,16 @@ ActiveRecord::Schema.define(version: 2019_01_10_112556) do
     t.datetime "updated_at", null: false
     t.integer "owner_id"
     t.index ["owner_id"], name: "index_certificates_on_owner_id"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.string "type", null: false
+    t.json "data"
+    t.string "aggregate_type"
+    t.integer "aggregate_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["aggregate_type", "aggregate_id"], name: "index_events_on_aggregate_type_and_aggregate_id"
   end
 
 end

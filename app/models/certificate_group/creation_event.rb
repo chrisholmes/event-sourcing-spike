@@ -1,11 +1,14 @@
-class CertificateGroup::CreationEvent < CertificateGroupEvent
-  def build_certificate_group
+class CertificateGroup::CreationEvent < Event
+  aggregated_with :group
+  validate :group_not_persisted, on: :create
+
+  def build_group
     CertificateGroup.new
   end
 
-  def certificate_not_persisted
-    if self.certificate_group.persisted?
-      self.errors.add(:certificate_group, "already exists")
+  def group_not_persisted
+    if self.group.persisted?
+      self.errors.add(:group, "already exists")
     end
   end
 

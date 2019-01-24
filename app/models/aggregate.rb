@@ -10,9 +10,5 @@ class Aggregate < ApplicationRecord
     event.aggregate
   end
 
-  def self.aggregates(name)
-    has_many name
-    alias_method :events, name
-    alias_method :events=, "#{name}="
-  end
+  has_many :events
 end
