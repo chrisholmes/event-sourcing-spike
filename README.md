@@ -35,9 +35,14 @@ The following aggregates are implemented:
 
 ## Creating Events and Updating Aggregates
 
-When an event is created a callback is used to ensure that an aggregate is
-updated. If an aggregate object doesn't already exist then the event will
-create a new one.
+When an event is created a [callback](app/models/event.rb#L2) is used to ensure
+that an [aggregate is updated](app/models/event.rb#L27).
+If an aggregate object doesn't already exist then the event will
+[create a new one](app/models/event.rb#L3). 
+
+Classes that inherit from `Event` must override `#apply(aggregate)` to implement
+the behaviour  needed to update the aggregate 
+(e.g. [`Certificate::CreateEvent#apply(certificate)`](app/models/certificate/create_event.rb#L27)).
 
 When an event is create should use its validation callbacks to check that the
 event can be applied to its associated aggregate. 
