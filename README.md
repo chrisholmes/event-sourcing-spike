@@ -12,15 +12,23 @@ The system is built from two types of objects:
 - [Events](app/models/event.rb)
 - [Aggregate](app/models/aggregate.rb)
 
-Event objects represent actions that happen in a system that when combined will
-produce an Aggregate object.
+Event objects represent the history of events that have happened in a system.
+Event can be combined to produce an Aggregate object that can be used to
+understand the current state of an entity in the system.
 
-The intention is that an instance of Event class will be to used to receive the
-inputs from a user when an action occurs.
+Unlike the Kickstarter example a single table is used for storing all events.
 
-Each event class will be designed to validate that the input it receives is
-appropriate against the current aggregate state as well as the aims of that
-action.
+Specific events are implemented by inheriting from [Event](app/models/event.rb) through
+ActiveRecord's support for [Single Table Inheritance](https://api.rubyonrails.org/classes/ActiveRecord/Inheritance.html). 
+
+An association is made between an event and its aggregate using Rails' support
+for [polymorphic associations](https://guides.rubyonrails.org/association_basics.html#polymorphic-associations).
+
+Each event class must be designed to validate that the input it receives is
+appropriate for the current aggregate state and goal of the action associated
+with the event..
+
+## What's modelled?
 
 This spike simulates what would happen when a user uploads a certificate as part
 of a group of other certificates.
@@ -44,7 +52,7 @@ Classes that inherit from `Event` must override `#apply(aggregate)` to implement
 the behaviour  needed to update the aggregate 
 (e.g. [`Certificate::CreateEvent#apply(certificate)`](app/models/certificate/create_event.rb#L27)).
 
-When an event is create should use its validation callbacks to check that the
+When an event is created it should use its validation callbacks to check that the
 event can be applied to its associated aggregate. 
 
 ## Tests
