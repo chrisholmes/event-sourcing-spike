@@ -28,7 +28,7 @@ Each event class must be designed to validate that the input it receives is
 appropriate for the current aggregate state and goal of the action associated
 with the event..
 
-## What's modelled?
+## What's modelled?
 
 This spike simulates what would happen when a user uploads a certificate as part
 of a group of other certificates.
