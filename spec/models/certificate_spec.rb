@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Certificate, type: :model do
   let(:good_owner) {
-    RelyingParty.create
+    CertificateGroup.create
   }
 
   it "represents the creation of a certificate" do
