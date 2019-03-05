@@ -25,10 +25,12 @@ class Certificate::CreateEvent < Event
   end
 
   def apply(certificate)
-    certificate.use = self.use
-    certificate.value = self.value
-    certificate.owner = self.owner
-    certificate.created_at = self.created_at
+    certificate.assign_attributes(
+      use: use,
+      value: value,
+      owner: owner,
+      created_at: created_at
+    )
     certificate
   end
 
