@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'models/event_spec.rb'
 
 RSpec.describe Certificate::CreateEvent, type: :model do
   let(:good_owner) {
