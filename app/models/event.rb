@@ -5,7 +5,7 @@ class Event < ActiveRecord::Base
 
   def self.aggregated_with(aggregate_name)
     @aggregate_name = aggregate_name
-    belongs_to :aggregate, polymorphic: true
+    belongs_to :aggregate, polymorphic: true, autosave: false
     define_method :aggregate_name do
       aggregate_name
     end
@@ -16,23 +16,27 @@ class Event < ActiveRecord::Base
     self.data ||= {}
   end
 
+  def preset_aggregate
+    self.aggregate ||= build_aggregate
+  end
+
   def build_aggregate
     public_send "build_#{aggregate_name}"
   end
 
-  def apply(aggregate)
-    raise NotImplementedError
-  end
-
   def update_aggregate
+    # Lock! (all good, we're in the ActiveRecord callback chain transaction)
+    aggregate.lock! if aggregate.persisted?
+
     self.aggregate = apply(aggregate)
 
-    self.aggregate.save!
+    aggregate.save!
     self.aggregate_id = aggregate.id if aggregate_id.nil?
   end
 
-  def preset_aggregate
-    self.aggregate ||= build_aggregate
+
+  def apply(aggregate)
+    raise NotImplementedError
   end
 
   def self.data_attributes(*names)
