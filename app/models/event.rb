@@ -30,7 +30,7 @@ class Event < ActiveRecord::Base
 
     self.aggregate = apply(aggregate)
 
-    aggregate.save!
+    aggregate.save_from_event!
     self.aggregate_id = aggregate.id if aggregate_id.nil?
   end
 
